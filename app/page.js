@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { TodoForm } from "@/components/TodoForm";
 import { TodoList } from "@/components/TodoList";
+import { TimelineView } from "@/components/TimelineView";
+import { ViewToggle } from "@/components/ViewToggle";
 import { UndoToast } from "@/components/UndoToast";
 import { useTodos } from "@/hooks/useTodos";
 
@@ -11,10 +14,13 @@ export default function Home() {
     isLoaded,
     addTodo,
     toggleTodo,
+    editTodo,
     deleteTodo,
     lastDeleted,
     undoDelete,
   } = useTodos();
+
+  const [view, setView] = useState("list");
 
   const completedCount = todos.filter((t) => t.completed).length;
 
@@ -34,12 +40,25 @@ export default function Home() {
 
         <TodoForm onAdd={addTodo} />
 
-        <TodoList
-          isLoaded={isLoaded}
-          todos={todos}
-          onToggle={toggleTodo}
-          onDelete={deleteTodo}
-        />
+        <ViewToggle view={view} onChange={setView} />
+
+        {view === "list" ? (
+          <TodoList
+            isLoaded={isLoaded}
+            todos={todos}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+            onEdit={editTodo}
+          />
+        ) : (
+          <TimelineView
+            isLoaded={isLoaded}
+            todos={todos}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+            onEdit={editTodo}
+          />
+        )}
       </main>
 
       <UndoToast lastDeleted={lastDeleted} onUndo={undoDelete} />

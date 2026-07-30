@@ -1,20 +1,8 @@
 import { EmptyState } from "./EmptyState";
+import { LoadingSkeleton } from "./LoadingSkeleton";
 import { TodoItem } from "./TodoItem";
 
-function LoadingSkeleton() {
-  return (
-    <ul className="flex flex-col gap-2" aria-hidden="true">
-      {[0, 1, 2].map((i) => (
-        <li
-          key={i}
-          className="h-16 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800"
-        />
-      ))}
-    </ul>
-  );
-}
-
-export function TodoList({ isLoaded, todos, onToggle, onDelete }) {
+export function TodoList({ isLoaded, todos, onToggle, onDelete, onEdit }) {
   if (!isLoaded) {
     return <LoadingSkeleton />;
   }
@@ -31,6 +19,7 @@ export function TodoList({ isLoaded, todos, onToggle, onDelete }) {
           todo={todo}
           onToggle={onToggle}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </ul>
